@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UserFinder</title>
+    <link rel="stylesheet" href="../styles.css">
+</head>
+<body>
+    <header>
+        <h1>UserFinder</h1>
+        <nav><a href="index.html">Terug naar Handige Tools</a></nav>
+    </header>
+    <main>
+        <h2>Beschrijving:</h2>
+        <p>Een programma dat op Facebook, Twitter, Instagram en LinkeIn naar een gebruikersnaam zoekt die je invoert. Je hebt enkel requests nodig.</p>
+
+        <h2>Code:</h2>
+        <pre>
+import requests
+from concurrent.futures import ThreadPoolExecutor
+
+def check_username(username):
+    urls = [
+        f"https://www.facebook.com/{username}",
+        f"https://twitter.com/{username}",
+        f"https://www.instagram.com/{username}",
+        f"https://www.linkedin.com/in/{username}",
+    ]
+    for url in urls:
+        response = requests.get(url)
+        if response.status_code == 200:
+            print(f"Gebruikersnaam gevonden: {url}")
+        else:
+            print(f"Geen gebruikersnaam gevonden op: {url}")
+
+if __name__ == "__main__":
+    username = input("Voer de gebruikersnaam in om te controleren: ")  # Hier kan de gebruiker een gebruikersnaam invoeren
+    with ThreadPoolExecutor() as executor:
+        future = executor.submit(check_username, username)
+        future.result()  # Wacht tot de thread klaar is
+
+    input("\nDruk op Enter om af te sluiten...")  # Voorkomt automatisch afsluiten
+        </pre>
+
+    </main>
+
+    <footer><p>&copy; 2025 My Projects - UserFinder</p></footer>
+
+</body>
+</html>
