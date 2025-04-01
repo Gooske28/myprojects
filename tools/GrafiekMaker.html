@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GrafiekMaker</title>
+    <link rel="stylesheet" href="../styles.css">
+</head>
+<body>
+    <header>
+        <h1>GrafiekMaker</h1>
+        <nav><a href="index.html">Terug naar Handige Tools</a></nav>
+    </header>
+    <main>
+        <h2>Beschrijving:</h2>
+        <p>Een programma dat grafieken maakt. Je moet de x en de y waarden invoeren en dan maakt hij automatisch een grafiek. Je hebt enkel matplotlib nodig.</p>
+
+        <h2>Code:</h2>
+        <pre>
+import matplotlib.pyplot as plt
+
+def plot_data():
+    x_values = input("Voer de x-waarden in, gescheiden door komma's: ").split(',')
+    y_values = input("Voer de y-waarden in, gescheiden door komma's: ").split(',')
+    x_values = [int(i) for i in x_values]
+    y_values = [int(i) for i in y_values]
+    plt.plot(x_values, y_values)
+    plt.show()
+
+plot_data()
+
+        </pre>
+
+    </main>
+
+    <footer><p>&copy; 2025 My Projects - GrafiekMaker</p></footer>
+
+</body>
+</html>
