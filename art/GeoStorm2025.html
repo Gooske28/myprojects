@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GeoStorm2025</title>
+    <link rel="stylesheet" href="../styles.css">
+</head>
+<body>
+    <header>
+        <h1>GeoStorm2025</h1>
+        <nav><a href="index.html">Terug naar Art Projecten</a></nav>
+    </header>
+    <main>
+        <h2>Beschrijving:</h2>
+        <p>Kleurrijke vormen gemaakt met python turtle.</p>
+
+        <h2>Code:</h2>
+        <pre>
+# Import
+import turtle
+import time
+import math
+from tkinter import Tk
+
+# Setup
+screen = turtle.Screen()
+root = screen.getcanvas().winfo_toplevel()
+root.attributes("-fullscreen", True)
+def close_window():
+    screen.bye()
+screen.onkey(close_window, "Escape")
+screen.listen()
+t = turtle.Turtle()
+t.speed(0)
+turtle.colormode(255)
+
+
+
+# Radioactieve driehoeken
+def radioactive_triangles():
+    t.penup()
+    t.right(90)
+    t.forward(300)
+    t.left(90)
+    t.forward(400)
+    t.left(120)
+    t.pendown()
+
+    # Teken drie rijen van driehoeken
+    for j in range(3):  # Herhaal 3 keer
+        for i in range(75):
+            lengte = 50 + 800 * math.sin(0.01 * i)
+
+            for _ in range(3):  # Drie zijden v/d driehoek
+                t.forward(lengte)
+                t.left(120)
+
+        # Volgende rij
+        t.right(120)
+        t.back(800)
+
+
+# Gekleurde driehoeken
+def colored_triangles():
+    t.penup()
+    t.home()
+    t.pendown()
+    t.speed(5)
+    
+    colors = ["red", "orange", "yellow", "green", "blue", "purple"]
+    for i in range(6):
+        t.color(colors[i])
+        t.begin_fill()
+        for _ in range(3):
+            t.forward(200)
+            t.right(120)
+        t.end_fill()
+        t.forward(50)
+        t.right(60)
+
+
+# Cirkel van driehoeken
+def circle_triangles():
+    t.penup()
+    t.home()
+    t.pendown()
+    t.speed(10)
+    t.pencolor("black")
+    
+    def draw_triangle():
+        for _ in range(3):
+            t.forward(50)
+            t.right(120)
+    
+    for _ in range(36):
+        draw_triangle()
+        t.right(10)
+        t.forward(20)
+        
+# cirkel van vijfhoeken        
+def five_angle():
+    t.penup()
+    t.home()
+    t.pendown()
+    t.speed(10)
+    colors = ["red", "green", "blue"]
+
+    for i in range(36):
+        for _ in range(5):
+            t.pencolor(colors[i % 3])
+            t.forward(100)
+            t.right(72)
+        t.right(10)
+
+
+# Uitvoeren
+radioactive_triangles()
+time.sleep(2)
+t.clear()
+
+colored_triangles()
+time.sleep(2)
+t.clear()
+
+circle_triangles()
+time.sleep(2)
+t.clear()
+
+five_angle()
+time.sleep(2)
+        </pre>
+
+    </main>
+
+    <footer><p>&copy; 2025 My Projects - GeoStorm</p></footer>
+
+</body>
+</html>
