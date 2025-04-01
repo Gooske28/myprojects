@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CoolestProjects2024</title>
+    <link rel="stylesheet" href="../styles.css">
+</head>
+<body>
+    <header>
+        <h1>CoolestProjects2024</h1>
+        <nav><a href="index.html">Terug naar Art Projecten</a></nav>
+    </header>
+    <main>
+        <h2>Beschrijving:</h2>
+        <p>Spiralen en hoekige figuren in verschillende kleuren met python turtle.</p>
+
+        <h2>Code:</h2>
+        <pre>
+import turtle
+
+# Functie om RGB-kleuren correct in te stellen
+def rgb_color(r, g, b):
+    return (r/255, g/255, b/255)
+
+t = turtle.Turtle()
+t.speed(0)  # 0 betekent snelste snelheid
+t.pensize(10)
+
+t.color(rgb_color(0, 255, 205))
+
+for i in range(360):
+    t.circle(i, 10)
+
+t.penup()
+t.home()
+t.pendown()
+t.color("white")
+t.pensize(12)
+
+for i in range(360):
+    t.circle(i, 10)
+
+t.penup()
+t.home()
+t.pendown()
+t.color(rgb_color(23, 210, 23))
+t.pensize(10)
+
+for i in range(360):
+    t.circle(-i, 10)
+
+t.penup()
+t.home()
+t.pendown()
+t.color("white")
+t.pensize(12)
+
+for i in range(360):
+    t.circle(-i, 10)
+
+t.penup()
+t.home()
+t.pendown()
+t.color(rgb_color(255, 0, 0))
+t.pensize(7)
+
+for i in range(360):
+    t.circle(i, 10)
+
+t.penup()
+t.home()
+t.pendown()
+t.color(rgb_color(255, 128, 0))
+t.pensize(8)
+
+for i in range(360):
+    t.circle(i, 10)
+
+t.penup()
+t.home()
+t.pendown()
+t.color(rgb_color(247, 255, 0))
+t.pensize(9)
+
+for i in range(360):
+    t.circle(i, 10)
+
+t.penup()
+t.home()
+t.pendown()
+t.color(rgb_color(0, 255, 94))
+t.pensize(10)
+
+for i in range(360):
+    t.circle(i, 10)
+
+t.penup()
+t.home()
+t.pendown()
+t.color(rgb_color(0, 213, 255))
+t.pensize(11)
+
+for i in range(360):
+    t.circle(i, 10)
+
+t.penup()
+t.home()
+t.pendown()
+t.color(rgb_color(222, 0, 255))
+t.pensize(12)
+
+for i in range(360):
+    t.circle(i, 10)
+
+t.penup()
+t.home()
+t.pendown()
+t.color("white")
+t.pensize(13)
+
+for i in range(360):
+    t.circle(i, 10)
+
+my_turtle = turtle.Turtle()
+
+# Set de penkleur en dikte
+my_turtle.pensize(3)
+colors = ["red", "blue", "green", "orange"]
+
+# Teken een cirkelpatroon
+for _ in range(36):
+    my_turtle.pencolor(colors[_ % 4])
+    my_turtle.circle(100)
+    my_turtle.right(10)
+
+# Sluit de turtle-grafiek af
+turtle.done()
+
+        </pre>
+
+    </main>
+
+    <footer><p>&copy; 2025 My Projects - GeoStorm</p></footer>
+
+</body>
+</html>
