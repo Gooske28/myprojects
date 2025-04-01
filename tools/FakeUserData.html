@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FakeUserData</title>
+    <link rel="stylesheet" href="../styles.css">
+</head>
+<body>
+    <header>
+        <h1>FakeUserData</h1>
+        <nav><a href="index.html">Terug naar Handige Tools</a></nav>
+    </header>
+    <main>
+        <h2>Beschrijving:</h2>
+        <p>Een simpel programma dat fake namen, adressen, telefoonnummers... maakt. Je kan de data opslaan of niet opslaan. Je hebt enkel faker nodig.</p>
+
+        <h2>Code:</h2>
+        <pre>
+from faker import Faker
+from faker.providers import internet
+import csv
+
+
+def generate_user_data(num_of_users):
+    fake = Faker()
+    fake.add_provider(internet)
+
+    user_data = []
+    for _ in range(num_of_users):
+        user = {
+            'Name': fake.name(),
+            'Email': fake.free_email(),
+            'Phone Number': fake.phone_number(),
+            'Birthdate': fake.date_of_birth(),
+            'Address': fake.address(),
+            'City': fake.city(),
+            'Country': fake.country(),
+            'ZIP Code': fake.zipcode(),
+            'Job Title': fake.job(),
+            'Company': fake.company(),
+            'IP Address': fake.ipv4_private(),
+            'Credit Card Number': fake.credit_card_number(),
+            'Username': fake.user_name(),
+            'Website': fake.url(),
+            'SSN': fake.ssn()
+        }
+        user_data.append(user)
+    return user_data
+
+
+def save_to_csv(data, filename):
+    keys = data[0].keys()
+    with open(filename, 'w', newline='') as output_file:
+        writer = csv.DictWriter(output_file, fieldnames=keys)
+        writer.writeheader()
+        writer.writerows(data)
+    print(f'[+] Data saved to {filename} successfully.')
+
+
+def save_to_text(data, filename):
+    with open(filename, 'w') as output_file:
+        for user in data:
+            for key, value in user.items():
+                output_file.write(f"{key}: {value}\n")
+            output_file.write('\n')
+    print(f'[+] Data saved to {filename} successfully.')
+
+
+def print_data_vertically(data):
+    for user in data:
+        for key, value in user.items():
+            print(f"{key}: {value}")
+        print()
+
+
+number_of_users = int(input("[!] Enter the number of users to generate: "))
+user_data = generate_user_data(number_of_users)
+
+save_option = input("[?] Do you want to save the data to a file? (yes/no): ").lower()
+
+if save_option == 'yes':
+    file_type = input("[!] Enter file type (csv/txt/both): ").lower()
+
+    if file_type in ['csv', 'both']:
+        custom_filename_csv = input("[!] Enter the CSV filename (without extension): ")
+        save_to_csv(user_data, f"{custom_filename_csv}.csv")
+
+    if file_type in ['txt', 'both']:
+        custom_filename_txt = input("[!] Enter the TXT filename (without extension): ")
+        save_to_text(user_data, f"{custom_filename_txt}.txt")
+
+    if file_type not in ['csv', 'txt', 'both']:
+        print("[-] Invalid file type. Data not saved.")
+else:
+    print_data_vertically(user_data)
+    input("[!] Press Enter to exit...")
+        </pre>
+
+    </main>
+
+    <footer><p>&copy; 2025 My Projects - FakeUserData</p></footer>
+
+</body>
+</html>
