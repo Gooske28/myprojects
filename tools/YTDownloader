@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>YTDownloader</title>
+    <link rel="stylesheet" href="../styles.css">
+</head>
+<body>
+    <header>
+        <h1>YTDowloader</h1>
+        <nav><a href="index.html">Terug naar Handige Tools</a></nav>
+    </header>
+    <main>
+        <h2>Beschrijving:</h2>
+        <p>Een programma dat liedjes van YouTube kan downloaden. Je moet de downloadlocatie in de source code instellen en dan moet je gewoon de link in de
+          terminal invoeren. Je hebt pytubefix en os nodig.</p>
+
+        <h2>Code:</h2>
+        <pre>
+from pytubefix import YouTube  # Gebruik pytubefix i.p.v. pytube
+import os
+
+def download_mp3(output_path):
+    try:
+        video_url = input("Voer de YouTube video URL in: ").split("&pp=")[0]  # Verwijder extra parameters
+        yt = YouTube(video_url)
+        audio_stream = yt.streams.filter(only_audio=True).first()
+        
+        # Gebruik raw string of forward slashes voor pad
+        output_file = audio_stream.download(output_path=output_path)
+        
+        # Hernoem naar .mp3
+        base, _ = os.path.splitext(output_file)
+        new_file = base + '.mp3'
+        os.rename(output_file, new_file)
+        print(f"Gedownload: {new_file}")
+        
+    except Exception as e:
+        print(f"Fout: {str(e)}")
+
+# Pad aanpassen naar raw string of forward slashes
+output_path = r"D:\Muziek"  # Raw string voor Windows-paden
+os.makedirs(output_path, exist_ok=True)
+download_mp3(output_path)
+
+        </pre>
+
+    </main>
+
+    <footer><p>&copy; 2025 My Projects - YTDownloader</p></footer>
+
+</body>
+</html>
