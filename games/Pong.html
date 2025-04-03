@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pong</title>
+    <link rel="stylesheet" href="../styles.css">
+</head>
+<body>
+    <header>
+        <h1>Pong</h1>
+        <nav><a href="index.html">Terug naar Security</a></nav>
+    </header>
+    <main>
+        <h2>Beschrijving:</h2>
+        <p>Het algemeen bekende spelletje Pong. Je hebt pygame en random nodig.</p>
+
+        <h2>Code:</h2>
+        <pre>
+import pygame
+import random
+
+# Scherminstellingen
+WIDTH, HEIGHT = 800, 600
+WHITE = (255, 255, 255)
+BLACK = (0, 0, 0)
+
+# Pygame initialiseren
+pygame.init()
+screen = pygame.display.set_mode((WIDTH, HEIGHT))
+pygame.display.set_caption("Pong")
+
+# Paddle instellingen
+PADDLE_WIDTH, PADDLE_HEIGHT = 15, 100
+BALL_SIZE = 15
+BALL_SPEED = 4
+PADDLE_SPEED = 6  # Snelheid voor de speler-paddle
+AI_PADDLE_SPEED = 4  # Langzamere snelheid voor de AI-paddle
+
+# Speler paddle (links)
+player_x, player_y = 50, (HEIGHT // 2) - (PADDLE_HEIGHT // 2)
+player_score = 0
+
+# AI paddle (rechts)
+ai_x, ai_y = WIDTH - 50 - PADDLE_WIDTH, (HEIGHT // 2) - (PADDLE_HEIGHT // 2)
+ai_score = 0
+
+# Bal
+ball_x, ball_y = WIDTH // 2, HEIGHT // 2
+ball_speed_x, ball_speed_y = BALL_SPEED * random.choice((1, -1)), BALL_SPEED * random.choice((1, -1))
+
+# Font voor score
+font = pygame.font.Font(None, 50)
+button_font = pygame.font.Font(None, 36)
+
+# Spel loop
+running = True
+clock = pygame.time.Clock()
+
+def reset_game():
+    global player_y, ai_y, ball_x, ball_y, ball_speed_x, ball_speed_y, player_score, ai_score
+    player_y = (HEIGHT // 2) - (PADDLE_HEIGHT // 2)
+    ai_y = (HEIGHT // 2) - (PADDLE_HEIGHT // 2)
+    player_score = 0
+    ai_score = 0
+
+def draw_button(text, x, y):
+    button_text = button_font.render(text, True, WHITE)
+    button_rect = pygame.Rect(x, y, 200, 50)
+    pygame.draw.rect(screen, (0, 128, 0), button_rect)  # Groen voor de knop
+    screen.blit(button_text, (x + 50, y + 10))
+    return button_rect
+
+while running:
+    screen.fill(BLACK)
+
+    # Event-afhandeling
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            running = False
+
+    # Spelerbeweging
+    keys = pygame.key.get_pressed()
+    if keys[pygame.K_UP] and player_y > 0:
+        player_y -= PADDLE_SPEED
+    if keys[pygame.K_DOWN] and player_y < HEIGHT - PADDLE_HEIGHT:
+        player_y += PADDLE_SPEED
+
+    # AI-beweging (volgt bal, maar trager)
+    if ai_y + PADDLE_HEIGHT // 2 < ball_y:
+        ai_y += AI_PADDLE_SPEED
+    if ai_y + PADDLE_HEIGHT // 2 > ball_y:
+        ai_y -= AI_PADDLE_SPEED
+    ai_y = max(0, min(HEIGHT - PADDLE_HEIGHT, ai_y))  # Houd binnen scherm
+
+    # Balbeweging
+    ball_x += ball_speed_x
+    ball_y += ball_speed_y
+
+    # Botsing met boven- en onderkant
+    if ball_y <= 0 or ball_y >= HEIGHT - BALL_SIZE:
+        ball_speed_y *= -1
+
+    # Botsing met paddles
+    if (player_x < ball_x < player_x + PADDLE_WIDTH and player_y < ball_y < player_y + PADDLE_HEIGHT) or \
+       (ai_x < ball_x + BALL_SIZE < ai_x + PADDLE_WIDTH and ai_y < ball_y < ai_y + PADDLE_HEIGHT):
+        ball_speed_x *= -1
+
+    # Scoren
+    if ball_x < 0:
+        ai_score += 1
+        ball_x = ai_x - BALL_SIZE - 10  # Bal begint 10px voor de AI-paddle
+        ball_y = ai_y + PADDLE_HEIGHT // 2 - BALL_SIZE // 2
+        ball_speed_x = BALL_SPEED  # AI slaat de bal richting speler
+        pygame.time.delay(2000)  # Wacht 2 seconden voor het volgende punt
+
+    if ball_x > WIDTH:
+        player_score += 1
+        ball_x = player_x + PADDLE_WIDTH + 10  # Bal begint 10px voor de speler-paddle
+        ball_y = player_y + PADDLE_HEIGHT // 2 - BALL_SIZE // 2
+        ball_speed_x = -BALL_SPEED  # Speler slaat de bal richting AI
+        pygame.time.delay(2000)  # Wacht 2 seconden voor het volgende punt
+
+    # Tekenen
+    pygame.draw.rect(screen, WHITE, (player_x, player_y, PADDLE_WIDTH, PADDLE_HEIGHT))
+    pygame.draw.rect(screen, WHITE, (ai_x, ai_y, PADDLE_WIDTH, PADDLE_HEIGHT))
+    pygame.draw.ellipse(screen, WHITE, (ball_x, ball_y, BALL_SIZE, BALL_SIZE))
+    pygame.draw.aaline(screen, WHITE, (WIDTH // 2, 0), (WIDTH // 2, HEIGHT))
+
+    # Score weergeven
+    score_text = font.render(f"{player_score} - {ai_score}", True, WHITE)
+    screen.blit(score_text, (WIDTH // 2 - 30, 20))
+
+    # Winnaar check na 11 punten
+    if player_score == 11 or ai_score == 11:
+        winner = "Jij wint!" if player_score == 11 else "AI wint!"
+        win_text = font.render(winner, True, WHITE)
+        score_text = font.render(f"Score: {player_score} - {ai_score}", True, WHITE)
+
+        screen.fill(BLACK)
+        screen.blit(win_text, (WIDTH // 2 - 100, HEIGHT // 2 - 50))
+        screen.blit(score_text, (WIDTH // 2 - 100, HEIGHT // 2))
+        restart_button = draw_button("Opnieuw Spelen", WIDTH // 2 - 100, HEIGHT // 2 + 60)
+
+        pygame.display.flip()
+
+        # Wacht op een klik om opnieuw te starten
+        waiting_for_restart = True
+        while waiting_for_restart:
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    waiting_for_restart = False
+                    running = False
+                if event.type == pygame.MOUSEBUTTONDOWN:
+                    if restart_button.collidepoint(event.pos):
+                        reset_game()
+                        waiting_for_restart = False
+            clock.tick(60)
+    else:
+        pygame.display.flip()
+
+    clock.tick(60)
+
+pygame.quit()
+
+        </pre>
+
+    </main>
+
+    <footer><p>&copy; 2025 My Projects - Pong</p></footer>
+
+</body>
+</html>
