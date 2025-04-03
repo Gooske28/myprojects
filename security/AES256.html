@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AES256</title>
+    <link rel="stylesheet" href="../styles.css">
+</head>
+<body>
+    <header>
+        <h1>AES256</h1>
+        <nav><a href="index.html">Terug naar Security</a></nav>
+    </header>
+    <main>
+        <h2>Beschrijving:</h2>
+        <p>Een programma dat tekst naar AES256 en omgekeerd codeert. Je hebt crypto, hashlib en base64 nodig.</p>
+
+        <h2>Code:</h2>
+        <pre>
+from Crypto.Cipher import AES
+from Crypto.Util.Padding import pad, unpad
+import hashlib
+import base64
+
+def get_key(password: str) -> bytes:
+    return hashlib.sha256(password.encode()).digest()
+
+def aes_encrypt(text: str, password: str) -> str:
+    key = get_key(password)
+    cipher = AES.new(key, AES.MODE_CBC)
+    ct_bytes = cipher.encrypt(pad(text.encode(), AES.block_size))
+    return base64.b64encode(cipher.iv + ct_bytes).decode()
+
+def aes_decrypt(encoded_text: str, password: str) -> str:
+    key = get_key(password)
+    raw_data = base64.b64decode(encoded_text)
+    iv = raw_data[:AES.block_size]
+    ct = raw_data[AES.block_size:]
+    cipher = AES.new(key, AES.MODE_CBC, iv)
+    return unpad(cipher.decrypt(ct), AES.block_size).decode()
+
+if __name__ == "__main__":
+    choice = input("Kies bewerking (encryptie/decryptie): ").strip().lower()
+    text = input("Voer de tekst in: ").strip()
+    password = input("Voer het wachtwoord in: ").strip()
+
+    if choice == "encryptie":
+        encrypted_text = aes_encrypt(text, password)
+        print("Versleutelde tekst:", encrypted_text)
+    elif choice == "decryptie":
+        try:
+            decrypted_text = aes_decrypt(text, password)
+            print("Ontsleutelde tekst:", decrypted_text)
+        except (ValueError, KeyError):
+            print("Fout: Sleutel onjuist of beschadigde versleutelde gegevens.")
+    else:
+        print("Ongeldige keuze.")
+    
+    input("\nDruk op Enter om af te sluiten...")
+        </pre>
+
+    </main>
+
+    <footer><p>&copy; 2025 My Projects - UserFinder</p></footer>
+
+</body>
+</html>
