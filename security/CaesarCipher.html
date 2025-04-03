@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CaesarCipher</title>
+    <link rel="stylesheet" href="../styles.css">
+</head>
+<body>
+    <header>
+        <h1>CaesarCipher</h1>
+        <nav><a href="index.html">Terug naar Security</a></nav>
+    </header>
+    <main>
+        <h2>Beschrijving:</h2>
+        <p>Een programma dat tekst naar Caesar Cipher en omgekeerd codeert. Je hebt niks nodig.</p>
+
+        <h2>Code:</h2>
+        <pre>
+def caesar_encrypt(text, shift):
+    result = ''
+    for char in text:
+        if char.isalpha():
+            shift_base = 65 if char.isupper() else 97
+            new_char = chr((ord(char) - shift_base + shift) % 26 + shift_base)
+            result += new_char
+        else:
+            result += char
+    return result
+
+def caesar_decrypt(text, shift):
+    return caesar_encrypt(text, -shift)
+
+if __name__ == "__main__":
+    choice = input("Kies bewerking (encryptie/decryptie): ").strip().lower()
+    text = input("Voer de tekst in: ").strip()
+    
+    try:
+        shift = int(input("Voer de verschuivingswaarde in (1-25): ").strip())
+        if shift < 1 or shift > 25:
+            print("Fout: De verschuivingswaarde moet tussen 1 en 25 zijn.")
+        else:
+            if choice == "encryptie":
+                encrypted_text = caesar_encrypt(text, shift)
+                print("Versleutelde tekst:", encrypted_text)
+            elif choice == "decryptie":
+                decrypted_text = caesar_decrypt(text, shift)
+                print("Ontsleutelde tekst:", decrypted_text)
+            else:
+                print("Ongeldige keuze.")
+    except ValueError:
+        print("Fout: Voer een geldig getal in voor de verschuivingswaarde.")
+    
+    input("\nDruk op Enter om af te sluiten...")  # Voorkomt automatisch afsluiten
+
+        </pre>
+
+    </main>
+
+    <footer><p>&copy; 2025 My Projects - UserFinder</p></footer>
+
+</body>
+</html>
